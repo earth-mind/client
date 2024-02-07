@@ -1,0 +1,15 @@
+# Byte-compiled
+__pycache__
+
+# Pytest
+.cache
+.pytest_cache/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Environment files
+.env
