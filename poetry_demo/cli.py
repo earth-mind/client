@@ -1,34 +1,4 @@
-# import click
-
-# JSON_RPC_ENDPOINT = ""
-
-# @click.group()
-# def cli():
-#     pass
-
-
 import click
-
-# @click.command()
-# @click.option("--count", default=1, help="Number of greetings.")
-# @click.option("--name", prompt="Your name", help="The person to greet.")
-# def hello(count, name):
-#     """Simple program that greets NAME for a total of COUNT times."""
-#     for _ in range(count):
-#         click.echo(f"Hello, {name}!")
-
-# if __name__ == '__main__':
-#     hello()
-
-# Comandos
-# earthmind miners list
-# earthmind miners add --account "0x0......"
-# earthmind miners remove --account "0x0......"
-# earthmind validators list
-# earthmind validators add --account "0x0......"
-# earthmind validators remove --account "0x0......"
-# earthmind miners start
-# earthmind validators start
 
 @click.group()
 def cli():
@@ -38,6 +8,15 @@ def cli():
 def miners():
     pass
 
+@cli.group()
+def validators():
+    pass
+
+@cli.group()
+def aggregator():
+    pass
+
+# Miners commands
 @miners.command()
 def list():
     click.echo("List of miners")
@@ -52,10 +31,11 @@ def add(account):
 def remove(account):
     click.echo(f"Remove miner with account {account}")
 
-@cli.group()
-def validators():
-    pass
+@miners.command()
+def run():
+    click.echo("Run miners")
 
+# Validators commands
 @validators.command()
 def list():
     click.echo("List of validators")
@@ -70,13 +50,14 @@ def add(account):
 def remove(account):
     click.echo(f"Remove validator with account {account}")
 
-@miners.command()
-def start():
-    click.echo("Start miners")
-
 @validators.command()
-def start():
+def run():
     click.echo("Start validators")
 
+# Aggregator commands
+@aggregator.command()
+def run():
+    click.echo("Start aggregator")
+    
 if __name__ == '__main__':
     cli()
