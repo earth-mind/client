@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "poetry-demo"
+name = "earthmind"
 version = "0.1.0"
 description = ""
-authors = ["edsonalcala <edson_alcala@msn.com>"]
+authors = ["EarthMind Team <admin@earthmind.tech>"]
 readme = "README.md"
+packages = [{ include = "earthmind" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"

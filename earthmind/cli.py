@@ -44,6 +44,7 @@ def list():
 @click.option("--account", help="Account to add")
 def add(account):
     click.echo(f"Add validator with account {account}")
+    validator.add(account)
 
 @validators.command()
 @click.option("--account", help="Account to remove")
@@ -61,3 +62,7 @@ def run():
     
 if __name__ == '__main__':
     cli()
+
+# Como agrego un unit test para los comandos?
+# Como agrego un unit test para la funcion validator.add()?
+# Por que el integration test requiere una transaction a una blockchain no?
