@@ -31,3 +31,22 @@ jobs:
       run: tox
       
 # Reference https://stackoverflow.com/questions/59532176/how-to-run-tox-from-github-actions
+
+# to think
+# jobs:
+#     build-and-push-app:
+#       runs-on: ubuntu-latest
+#       steps:
+#       - uses: actions/checkout@v2
+#       - name: Build app image
+#         run: docker build -f Dockerfile.app -t myapp:latest .
+  
+#     test:
+#       runs-on: ubuntu-latest
+#       steps:
+#       - uses: actions/checkout@v2
+#       - name: Build test image
+#         run: docker build -f Dockerfile.test -t myapp-test:latest .
+#       - name: Run tests
+#         run: docker run myapp-test
+  

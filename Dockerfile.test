@@ -1,0 +1,29 @@
+# Base image for smart contract testing with Foundry
+FROM ghcr.io/foundry-rs/foundry:latest as foundry
+
+# Official Python image
+FROM python:3.11-slim
+
+# Set work directory
+WORKDIR /app
+
+# Install Poetry
+RUN pip install --no-cache-dir poetry
+
+# Copy Poetry files
+COPY pyproject.toml poetry.lock* /app/
+
+# Configure Poetry: disable virtualenv creation
+RUN poetry config virtualenvs.create false
+
+# Install dependencies (including dev for testing)
+RUN poetry install --no-interaction --no-ansi
+
+# Copy Foundry binaries to the bin directory
+COPY --from=foundry /usr/local/bin/ /usr/local/bin/
+
+# Copy application code
+COPY . /app
+
+# Default command: run tests with pytest
+CMD ["poetry", "run", "pytest"]
