@@ -1,52 +1,23 @@
-name: Python package
+name: Continuous Integration
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7]
-
-    # steps:
-    # - uses: actions/checkout@v1
-    # - name: Install tox
-    #   run: pip install tox
-    # - name: Run tox
-    #   run: tox
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install tox tox-gh-actions
-    - name: Test with tox
-      run: tox
-      
-# Reference https://stackoverflow.com/questions/59532176/how-to-run-tox-from-github-actions
+    - name: Check out repository code
+      uses: actions/checkout@v4
 
-# to think
-# jobs:
-#     build-and-push-app:
-#       runs-on: ubuntu-latest
-#       steps:
-#       - uses: actions/checkout@v2
-#       - name: Build app image
-#         run: docker build -f Dockerfile.app -t myapp:latest .
-  
-#     test:
-#       runs-on: ubuntu-latest
-#       steps:
-#       - uses: actions/checkout@v2
-#       - name: Build test image
-#         run: docker build -f Dockerfile.test -t myapp-test:latest .
-#       - name: Run tests
-#         run: docker run myapp-test
+    - name: Build Docker image
+      run: docker build . -f Dockerfile.test -t earthmind-test
+
+    - name: Run tests
+      run: docker run earthmind-test
   
