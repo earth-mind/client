@@ -4,6 +4,12 @@ FROM ghcr.io/foundry-rs/foundry:latest as foundry
 # Official Python image
 FROM python:3.11-slim
 
+# Install required tools
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set work directory
 WORKDIR /app
 
@@ -22,8 +28,24 @@ RUN poetry install --no-interaction --no-ansi
 # Copy Foundry binaries to the bin directory
 COPY --from=foundry /usr/local/bin/ /usr/local/bin/
 
-# Copy application code
+# Download and place the cross-anvil binary in /usr/local/bin
+RUN curl -L https://github.com/earth-mind/cross-anvil/releases/download/v0.0.4/cross-anvil_v0.0.4_linux_amd64.tar.gz -o cross-anvil.tar.gz \
+    && tar -xzf cross-anvil.tar.gz -C /usr/local/bin/ \
+    && rm cross-anvil.tar.gz \
+    && chmod +x /usr/local/bin/cross-anvil*
+
+# Clone the repository
+RUN git clone https://github.com/earth-mind/contracts.git /app/contracts
+
+WORKDIR /app/contracts
+
+RUN forge build
+
+# Set work directory back to /app for Python tests
+WORKDIR /app
+
+# Copy the rest of the code into the container
 COPY . /app
 
-# Default command: run tests with pytest
-CMD ["poetry", "run", "pytest"]
+# Starting cross-anvil before running tests
+CMD cross-anvil & poetry run pytest
