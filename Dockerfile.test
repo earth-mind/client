@@ -30,7 +30,7 @@ RUN poetry install --no-interaction --no-ansi
 COPY --from=foundry /usr/local/bin/ /usr/local/bin/
 
 # Download and place the cross-anvil binary in /usr/local/bin
-RUN curl -L https://github.com/earth-mind/cross-anvil/releases/download/v0.0.4/cross-anvil_v0.0.4_linux_amd64.tar.gz -o cross-anvil.tar.gz \
+RUN curl -L https://github.com/earth-mind/cross-anvil/releases/download/v0.0.5/cross-anvil_v0.0.5_linux_amd64.tar.gz -o cross-anvil.tar.gz \
     && tar -xzf cross-anvil.tar.gz -C /usr/local/bin/ \
     && rm cross-anvil.tar.gz \
     && chmod +x /usr/local/bin/cross-anvil*
