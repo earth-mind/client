@@ -64,4 +64,4 @@ COPY . /app
 RUN chmod +x docker-runner.sh
 
 # Starting cross-anvil before running tests
-CMD ["docker-runner.sh"]
+CMD ["/app/docker-runner.sh"]
