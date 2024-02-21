@@ -8,6 +8,7 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    just \
     && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
@@ -36,6 +37,15 @@ RUN curl -L https://github.com/earth-mind/cross-anvil/releases/download/v0.0.4/c
 
 # Clone the repository
 RUN git clone https://github.com/earth-mind/contracts.git /app/contracts
+
+ENV MNEMONIC="test test test test test test test test test test test junk"
+ENV CHAIN1_URL="http://localhost:8555"
+ENV CHAIN2_URL="http://localhost:8556"
+ENV CHAIN1_ID="31337"
+ENV CHAIN2_ID="31338"
+ENV SENDER="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+
+RUN just deploy_local_contracts
 
 WORKDIR /app/contracts
 
