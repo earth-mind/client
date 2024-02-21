@@ -55,15 +55,13 @@ WORKDIR /app/contracts
 
 RUN forge build
 
-RUN cross-anvil 
-
-RUN just deploy_local_contracts
-
 # Set work directory back to /app for Python tests
 WORKDIR /app
 
 # Copy the rest of the code into the container
 COPY . /app
 
+RUN chmod +x docker-runner.sh
+
 # Starting cross-anvil before running tests
-CMD ["poetry", "run", "pytest"]
+CMD ["docker-runner.sh"]
