@@ -8,8 +8,14 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     git \
     curl \
-    just \
+    build-essential \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && . $HOME/.cargo/env \
     && rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN cargo install just
 
 # Set work directory
 WORKDIR /app
@@ -45,11 +51,13 @@ ENV CHAIN1_ID="31337"
 ENV CHAIN2_ID="31338"
 ENV SENDER="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
 
-RUN just deploy_local_contracts
-
 WORKDIR /app/contracts
 
 RUN forge build
+
+RUN cross-anvil 
+
+RUN just deploy_local_contracts
 
 # Set work directory back to /app for Python tests
 WORKDIR /app
@@ -58,4 +66,4 @@ WORKDIR /app
 COPY . /app
 
 # Starting cross-anvil before running tests
-CMD cross-anvil & poetry run pytest
+CMD ["poetry", "run", "pytest"]
